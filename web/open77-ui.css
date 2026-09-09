@@ -1,0 +1,186 @@
+/* =============================================================================
+   OPEN//77 - in-game UI design tokens
+   =============================================================================
+
+   MIRRORED FILE. Every in-game WebUI resource ships a byte-identical copy at
+   `<resource>/web/open77-ui.css`. Do not edit one copy: edit them all, then
+   verify they still match (the one-line check is in `docs/ui-design-system.md`).
+
+   Why a copy and not a shared file: each resource's WebUI runs under its own
+   isolated virtual origin and can only load files declared in its own manifest,
+   so `resources/A/web/index.html` cannot reference a stylesheet that lives in
+   `resources/B/web/`. There is no shared origin to put one file on. The same
+   reasoning is already recorded in the token blocks of `open77_pause` and
+   `open77_debug`; this file replaces those twelve divergent blocks with twelve
+   identical ones.
+
+   Source of truth: the OPEN//77 website design system -
+   `app/references/design-system.md` (the "OPEN SIGNAL" addendum, which the
+   document itself marks as superseding its section 1) and
+   `app/src/styles/legacy/01-tokens.css`. Values below are those values.
+   Deviations are marked `IN-GAME:` and each carries its reason.
+   ========================================================================== */
+
+:root {
+  /* --- FIELD ---------------------------------------------------------------
+     The night. Never pure black: on the site because black reads as a void,
+     in-game because a black panel over a night street disappears. */
+  --op77-void:       #060a12;
+  --op77-bg:         #080e19;
+  --op77-bg-elev:    #0d1624;
+  --op77-surface:    #101b2b;
+  --op77-surface-2:  #132032;
+
+  /* IN-GAME: panel fills drawn over live gameplay.
+     The site can use flat opaque surfaces because nothing moves behind them.
+     A HUD panel sits over a scene that swings from a blown-out white plaza to a
+     black alley, so its backing must stay opaque enough to hold text at either
+     extreme. 0.94 is the floor for anything carrying words; use --op77-panel
+     for read-me-now surfaces and --op77-panel-quiet only for decoration. */
+  --op77-panel:        rgba(10, 18, 32, 0.94);
+  --op77-panel-raised: rgba(16, 27, 43, 0.96);
+  --op77-panel-quiet:  rgba(10, 18, 32, 0.78);
+  --op77-scrim:        rgba(3, 7, 13, 0.72);
+
+  /* --- LINES ---------------------------------------------------------------
+     Blue-gray hairlines, never cyan. Depth comes from borders, not shadows. */
+  --op77-line:        rgba(174, 211, 224, 0.10);
+  --op77-line-strong: rgba(174, 211, 224, 0.19);
+  /* IN-GAME: a 10%-alpha hairline vanishes against a bright frame. Panel
+     outlines that must survive any backdrop use --op77-line-hud. */
+  --op77-line-hud:    rgba(174, 211, 224, 0.30);
+
+  /* --- INK -----------------------------------------------------------------
+     Contrast measured against --op77-surface #101b2b:
+       text       16.2:1   body and headings, any size
+       text-dim    6.2:1   secondary copy, passes AA at any size
+       text-faint  3.6:1   decoration and disabled only - never body copy */
+  --op77-text:       #f2f6f8;
+  --op77-text-dim:   #8d99a8;
+  --op77-text-faint: rgba(141, 153, 168, 0.72);
+  --op77-ink:        #071013;  /* text ON an accent fill - never white */
+
+  /* --- SIGNAL --------------------------------------------------------------
+     One chromatic family with depth. Cyan = platform / active / connected.
+     Coral = live / full / featured / new - semantic only, never a CTA.
+     Budget: if a viewport shows more than ~3 cyan elements, remove some. */
+  --op77-accent:       #22d8e2;   /* OPEN Electric - CTAs, links, active state */
+  --op77-accent-ice:   #70f3f5;   /* OPEN Ice - brand mark and hover peaks     */
+  --op77-accent-deep:  #18c8d4;   /* OPEN Deep - second signal channel         */
+  --op77-accent-soft:  rgba(34, 216, 226, 0.12);
+  --op77-accent-line:  rgba(34, 216, 226, 0.45);
+  --op77-signal:       #ff5964;   /* coral - live / full / featured / new      */
+  --op77-danger:       #ff5c5c;   /* errors, destructive, offline              */
+
+  /* IN-GAME: the site has no success or warning role because a marketing page
+     never has to say "spawned" or "connection degraded". A HUD does. These two
+     are the only colours here with no website counterpart; they are tuned to
+     sit in the same cold family rather than borrowing the game's own palette. */
+  --op77-ok:   #4fe3a9;
+  --op77-warn: #f5c95c;
+
+  /* Reserved for live things only - status dots, a running counter, an active
+     nav state. Never on static decoration. */
+  --op77-glow: 0 0 24px rgba(34, 216, 226, 0.25);
+
+  /* --- TYPE ----------------------------------------------------------------
+     The website self-hosts Rajdhani / Saira / IBM Plex Mono through next/font.
+     In-game there is no network and no font is bundled with any resource, so
+     those three names NEVER resolve and every surface silently fell back to
+     whatever came next in its stack - which is why the twelve surfaces do not
+     look related today. They are kept first in each stack so that bundling a
+     webfont later takes over with no edit here.
+
+     What actually renders is the second name in each stack, chosen to carry the
+     same voice from fonts Windows ships:
+       display  Bahnschrift Condensed  - DIN-derived, squared terminals, the
+                                         closest shipping face to Rajdhani
+       body     Bahnschrift            - same family, normal width
+       mono     Cascadia Mono          - the micro-label and data voice */
+  --op77-font-display: "Rajdhani", "Bahnschrift Condensed", "Bahnschrift SemiCondensed", "Arial Narrow", "Segoe UI", sans-serif;
+  --op77-font-body:    "Saira", "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+  --op77-font-mono:    "IBM Plex Mono", "Cascadia Mono", "Consolas", ui-monospace, monospace;
+
+  /* HUD type scale. Larger than the website's page scale on purpose: this text
+     is read at arm's length over a moving image, not on a document. */
+  --op77-fs-micro:  9px;    /* mono eyebrow, letter-spacing .18em, UPPERCASE  */
+  --op77-fs-label:  10px;   /* mono labels, keycaps                          */
+  --op77-fs-meta:   11px;   /* mono data, secondary lines                    */
+  --op77-fs-body:   14px;   /* the default                                   */
+  --op77-fs-lead:   16px;   /* the one line that must be read first          */
+  --op77-fs-title:  18px;   /* card and toast titles                         */
+  --op77-fs-head:   26px;   /* panel headings                                */
+  --op77-fs-hero:   40px;   /* countdowns, verdicts                          */
+
+  --op77-track-micro: 0.18em;  /* mono eyebrows */
+  --op77-track-label: 0.12em;  /* mono labels   */
+  --op77-track-head:  0.02em;  /* display heads */
+
+  /* --- SPACE ---------------------------------------------------------------
+     Base-4. Density lives inside panels, not between them. */
+  --op77-space-1: 4px;
+  --op77-space-2: 8px;
+  --op77-space-3: 12px;
+  --op77-space-4: 16px;
+  --op77-space-5: 24px;
+  --op77-space-6: 32px;
+  --op77-space-7: 48px;
+  --op77-space-8: 64px;
+
+  /* IN-GAME: distance from the viewport edge for every HUD surface, so the
+     twelve of them line up instead of each picking its own vh/vw. */
+  --op77-inset-x: 32px;
+  --op77-inset-y: 28px;
+
+  /* --- SHAPE ---------------------------------------------------------------
+     Square-leaning. 6px is the maximum radius anywhere in the system. */
+  --op77-radius-sm: 2px;
+  --op77-radius-md: 6px;
+  --op77-notch: 12px;
+  --op77-notch-clip: polygon(0 0, calc(100% - var(--op77-notch)) 0, 100% var(--op77-notch), 100% 100%, 0 100%);
+  /* Accent rule down the leading edge of a panel - the house marker for
+     "this belongs to Open77". 3px; 2px on small items. */
+  --op77-rule: 3px;
+
+  /* IN-GAME: the site forbids shadows for elevation and it is right - on a flat
+     page a border is enough. Over gameplay a border alone does not separate a
+     panel from a detailed backdrop, so one shadow is allowed, and only this
+     one. It is a separation device, not a depth ramp: there are no levels. */
+  --op77-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+
+  /* --- MOTION --------------------------------------------------------------
+     Functional and fast. No glitch loops, no parallax, no idle animation. */
+  --op77-ease: cubic-bezier(0.2, 0, 0, 1);
+  --op77-dur-fast: 90ms;    /* colour and border changes  */
+  --op77-dur:      150ms;   /* enter, leave, hover        */
+  --op77-dur-slow: 220ms;   /* a whole panel sliding in   */
+}
+
+/* The `//` device. Where it appears, nothing else glows.
+   Use as: <span class="op77-eyebrow">Session</span> */
+.op77-eyebrow {
+  font: 700 var(--op77-fs-micro) / 1 var(--op77-font-mono);
+  letter-spacing: var(--op77-track-micro);
+  text-transform: uppercase;
+  color: var(--op77-text-dim);
+}
+.op77-eyebrow::before {
+  content: "//";
+  margin-right: 0.7em;
+  color: var(--op77-accent);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+}
+
+/* Animation enhances, it never gates: nothing here starts at opacity 0 without
+   a paired end state, and all of it is off when the player asked for less. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

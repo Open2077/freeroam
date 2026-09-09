@@ -1,0 +1,19 @@
+# Runtime-owned courses, settings and player/server state are not source code.
+/data/
+/.open77/
+/logs/
+/backups/
+.env
+.env.*
+*.log
+*.db
+*.sqlite
+*.sqlite3
+server.jsonc
+acl.jsonc
+
+# Local editor and OS files.
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db

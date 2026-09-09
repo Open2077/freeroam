@@ -1,0 +1,255 @@
+/* OPEN//77 Design System — freeroam production theme.
+ *
+ * This is the offline/Cef-safe transcription of `Open77 Design System/tokens`.
+ * The reference kit loads substitute fonts and icons from public CDNs; a game
+ * resource cannot depend on either, so the same roles resolve to Windows faces
+ * and all graphics below are CSS geometry. No gameplay surface reaches the
+ * network to render its UI.
+ */
+
+:root {
+  /* Night / chrome ramps. */
+  --o-black: #05070b;
+  --o-ink-900: #0b0e14;
+  --o-ink-800: #0d131d;
+  --o-ink-700: #12161f;
+  --o-ink-600: #171c26;
+  --o-ink-500: #1e242f;
+  --o-ink-400: #2a313e;
+  --o-ink-300: #3a4250;
+  --o-ink-200: #5a6472;
+  --o-ink-100: #8a94a2;
+  --o-chrome-000: #ffffff;
+  --o-chrome-050: #f7f9fb;
+  --o-chrome-100: #f0f3f6;
+  --o-chrome-200: #dde3e9;
+  --o-chrome-300: #bcc5ce;
+
+  /* Brand and functional accents. */
+  --o-cyan-400: #4ee6ee;
+  --o-cyan-500: #22d8e2;
+  --o-cyan-600: #12b4be;
+  --o-cyan-700: #0b7f87;
+  --o-cyan-900: #0a2a2e;
+  --o-teal-muted: #3d7f85;
+  --o-red-500: #ff3b4e;
+  --o-red-700: #8e1420;
+  --o-amber-500: #ffb020;
+  --o-amber-700: #8a5a00;
+  --o-mint-500: #2be58b;
+  --o-mint-700: #0e6b41;
+  --o-magenta-500: #ff2e88;
+  --o-violet-500: #7c5cff;
+
+  /* Surfaces and text. */
+  --surface-app: var(--o-ink-900);
+  --surface-panel: var(--o-ink-800);
+  --surface-panel-raised: var(--o-ink-700);
+  --surface-panel-hover: var(--o-ink-600);
+  --surface-inset: var(--o-black);
+  --surface-scrim: rgba(5, 7, 11, 0.78);
+  --surface-hud: rgba(11, 14, 20, 0.82);
+  --text-primary: #e6eaec;
+  --text-secondary: #8a94a2;
+  --text-muted: #5a6472;
+  --text-accent: var(--o-cyan-500);
+  --text-on-accent: #05262a;
+  --text-on-chrome: #141d29;
+  --text-eyebrow: var(--o-teal-muted);
+  --line-hairline: rgba(138, 148, 162, 0.18);
+  --line-strong: rgba(138, 148, 162, 0.34);
+  --line-hud: rgba(230, 234, 236, 0.16);
+
+  /* Vitals. */
+  --vital-health: var(--o-red-500);
+  --vital-health-empty: rgba(255, 59, 78, 0.16);
+  --vital-armor: var(--o-cyan-500);
+  --vital-stamina: var(--o-amber-500);
+  --vital-ram: var(--o-violet-500);
+  --vital-xp: var(--o-mint-500);
+
+  /* Offline font substitutions for the four design roles. */
+  --font-display: "Saira", "Bahnschrift SemiCondensed", "Arial Narrow", "Segoe UI", sans-serif;
+  --font-ui: "Chakra Petch", "Bahnschrift", "Segoe UI", sans-serif;
+  --font-body: "Rajdhani", "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", "Consolas", ui-monospace, monospace;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 800;
+  --size-label-lg: 15px;
+  --size-label: 13px;
+  --size-label-sm: 11px;
+  --size-label-xs: 10px;
+  --size-body: 17px;
+  --size-body-sm: 15px;
+  --size-data: 13px;
+  --size-data-sm: 11px;
+  --ls-display: -0.01em;
+  --ls-label: 0.14em;
+  --ls-label-tight: 0.08em;
+  --ls-data: 0.04em;
+
+  /* Spacing / controls. */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 20px;
+  --space-7: 24px;
+  --space-8: 32px;
+  --space-9: 40px;
+  --space-10: 56px;
+  --control-h-sm: 32px;
+  --control-h: 44px;
+  --control-h-lg: 54px;
+  --control-px: 20px;
+  --panel-pad: 24px;
+  --panel-pad-sm: 16px;
+  --hud-gap: 10px;
+  --gutter-page: 32px;
+
+  /* Shape / depth / motion. */
+  --chamfer-sm: 6px;
+  --chamfer: 10px;
+  --chamfer-lg: 16px;
+  --chamfer-xl: 24px;
+  --cut-sm: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  --cut-md: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  --cut-lg: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  --cut-tr: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  --cut-tl: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
+  --shadow-panel: 0 18px 48px -18px rgba(0, 0, 0, 0.85);
+  --shadow-overlay: 0 40px 90px -20px rgba(0, 0, 0, 0.9);
+  --shadow-inset-well: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+  --glow-accent: 0 0 0 1px rgba(34, 216, 226, 0.5), 0 0 18px -2px rgba(34, 216, 226, 0.45);
+  --glow-accent-soft: 0 0 24px -6px rgba(34, 216, 226, 0.35);
+  --glow-danger: 0 0 18px -2px rgba(255, 59, 78, 0.5);
+  --scanline: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px);
+  --grid-fine: linear-gradient(rgba(138, 148, 162, 0.06) 1px, transparent 1px) 0 0 / 100% 8px,
+    linear-gradient(90deg, rgba(138, 148, 162, 0.06) 1px, transparent 1px) 0 0 / 8px 100%;
+  --blur-hud: blur(10px) saturate(1.1);
+  --ease-out: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --ease-snap: cubic-bezier(0.2, 0, 0, 1);
+  --dur-1: 90ms;
+  --dur-2: 140ms;
+  --dur-3: 220ms;
+  --dur-4: 340ms;
+  --t-hover: background var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input { font: inherit; }
+button:focus-visible, input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--o-ink-900), 0 0 0 4px var(--o-cyan-500);
+}
+
+.ds-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--text-eyebrow);
+  font: var(--fw-semibold) var(--size-label-sm) / 1 var(--font-ui);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.ds-section-label::before {
+  content: "//";
+  color: var(--o-cyan-500);
+  font-weight: var(--fw-black);
+  letter-spacing: -0.08em;
+}
+
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 22px;
+  padding: 0 8px;
+  border: 1px solid rgba(43, 229, 139, 0.4);
+  background: rgba(43, 229, 139, 0.13);
+  color: var(--o-mint-500);
+  clip-path: var(--cut-sm);
+  font: var(--fw-semibold) var(--size-label-xs) / 1 var(--font-ui);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.ds-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.ds-panel {
+  position: relative;
+  border: 1px solid var(--line-hairline);
+  background: var(--surface-panel);
+  clip-path: var(--cut-lg);
+}
+.ds-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scanline);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.ds-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--ls-data);
+}
+
+.ds-label {
+  color: var(--text-secondary);
+  font: var(--fw-semibold) var(--size-label-xs) / 1 var(--font-ui);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+
+@keyframes ds-slide-right {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ds-slide-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ds-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ds-critical {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

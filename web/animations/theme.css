@@ -1,0 +1,64 @@
+/* Same offline Open//77 tokens and shared surface as the sandbox/activity UI. */
+#page-animations [hidden] { display: none !important; }
+#page-animations { gap: 14px; }
+.freeroam-menu .tabs { flex-wrap: wrap; flex-shrink: 0; gap: 2px; }
+.freeroam-menu .tab { min-width: 76px; min-height: 40px; padding: 0 5px; }
+.freeroam-menu .anim-intro { display: flex; align-items: flex-start; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line-hairline); }
+.freeroam-menu .anim-intro > div:first-child { flex: 1; min-width: 0; }
+.freeroam-menu .anim-intro h2 { margin: 12px 0 8px; font-size: clamp(25px, 2.4vw, 34px); }
+.freeroam-menu .anim-intro h2::before { content: none; }
+.freeroam-menu .anim-intro h2 span { color: var(--o-cyan-500); }
+.anim-total { display: flex; flex-direction: column; align-items: flex-end; color: var(--o-cyan-500); }
+.anim-total strong { font: 800 44px/1 var(--font-display); }
+.anim-total span, .anim-list-head, .anim-current > div > span, .anim-card-meta, .anim-test-tag { font: 600 10px/1.5 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.anim-current { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--line-hairline); background: var(--surface-panel); }
+.anim-signal { width: 6px; height: 6px; background: var(--text-muted); flex: 0 0 auto; }
+.anim-current.active .anim-signal { background: var(--o-cyan-500); box-shadow: 0 0 9px #22d8e245; }
+.anim-current > div { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 3px; }
+.anim-current > div > span { color: var(--text-muted); }
+.anim-current strong { font: 500 13px/1.4 var(--font-body); color: var(--text-primary); overflow-wrap: anywhere; }
+.freeroam-menu .anim-current .btn { flex: 0 0 auto; min-height: 34px; padding: 7px 12px; }
+.freeroam-menu #anim-search { min-width: 0; width: 100%; background: var(--o-ink-800); border: 1px solid var(--line-hairline); color: var(--text-primary); padding: 13px; font: 400 14px var(--font-body); }
+.anim-filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.anim-filters button { border: 1px solid var(--line-hairline); background: transparent; color: var(--text-secondary); padding: 7px 10px; font: 600 10px var(--font-ui); text-transform: uppercase; letter-spacing: .04em; cursor: pointer; }
+.anim-filters button[aria-pressed="true"] { background: #22d8e214; color: var(--o-cyan-500); border-color: var(--o-cyan-700); }
+.anim-list-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; color: var(--text-muted); }
+.anim-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: clamp(150px, 30vh, 360px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--o-cyan-700) transparent; padding-right: 4px; }
+.anim-card { position: relative; min-width: 0; }
+.anim-card-select { display: flex; flex-direction: column; gap: 6px; width: 100%; min-height: 116px; height: 100%; text-align: left; border: 1px solid var(--line-hairline); border-left: 2px solid var(--line-hairline); background: var(--o-ink-800); padding: 14px; color: var(--text-primary); cursor: pointer; transition: background 120ms, border-color 120ms; }
+.anim-card-select:hover { background: var(--o-ink-700); border-color: var(--o-cyan-700); }
+.anim-card-select[aria-pressed="true"] { border-color: var(--o-cyan-700); border-left-color: var(--o-cyan-500); background: #22d8e210; }
+.anim-card-meta { color: var(--text-muted); padding-right: 22px; }
+.anim-card-select strong { font: 600 15px/1.3 var(--font-body); overflow-wrap: anywhere; }
+.anim-card-select small { font: 400 11px/1.4 var(--font-mono); color: var(--text-secondary); overflow-wrap: anywhere; }
+.anim-star { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; background: transparent; border: 0; color: var(--text-muted); font-size: 21px; cursor: pointer; }
+.anim-star[aria-pressed="true"], .anim-star:hover { color: var(--o-cyan-500); }
+.anim-selection { position: sticky; bottom: 0; z-index: 2; flex-shrink: 0; padding: 12px; background: var(--o-ink-800); border: 1px solid var(--o-cyan-700); border-top: 2px solid var(--o-cyan-500); display: flex; flex-direction: column; gap: 6px; box-shadow: 0 -12px 20px #05070b90; }
+.anim-selection-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.anim-test-tag { color: #f5c95c; font-size: 9px; }
+.anim-test-tag.checked { color: #4fe3a9; }
+#anim-selected { font: 600 18px/1.3 var(--font-body); color: var(--text-primary); }
+#anim-detail { color: var(--text-secondary); font: 400 12px/1.4 var(--font-body); }
+.anim-options { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; min-height: 32px; }
+.anim-options label { display: flex; align-items: center; gap: 8px; font: 600 11px var(--font-ui); color: var(--text-secondary); cursor: pointer; }
+.anim-options input { accent-color: var(--o-cyan-500); width: 15px; height: 15px; }
+.anim-options select { color: var(--text-primary); background: var(--o-ink-900); border: 1px solid var(--line-hairline); padding: 6px; }
+#anim-play { display: flex; justify-content: space-between; width: 100%; }
+.anim-help, .anim-validation { color: var(--text-muted); font: 400 11px/1.5 var(--font-body); }
+.anim-message { color: #f5c95c; background: #f5c95c0a; border-left: 2px solid #f5c95c; padding: 10px !important; font: 400 13px/1.4 var(--font-body); }
+.anim-empty { text-align: center; padding: 20px; color: var(--text-secondary); }
+.anim-empty strong { font: 700 18px var(--font-display); color: var(--text-primary); }
+.anim-empty p { font: 400 13px/1.5 var(--font-body); margin: 8px 0 14px; }
+#page-animations button:disabled { opacity: .4; cursor: not-allowed; }
+#page-animations :focus-visible { outline: 2px solid var(--o-cyan-500); outline-offset: 2px; }
+@media (max-width: 850px) {
+  .freeroam-menu .drawer { width: min(660px, 94vw); }
+  .freeroam-menu .toast { left: 20px; max-width: calc(94vw - 40px); }
+}
+@media (max-width: 460px) {
+  .anim-grid { grid-template-columns: 1fr; }
+  .anim-total { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #page-animations *, .freeroam-menu .drawer { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,87 @@
+/* Open77 combat activity: chamfered glass, cyan light, mechanical motion. */
+[hidden] { display: none !important; }
+.freeroam-menu .tabs { flex-wrap: wrap; }
+.freeroam-menu .pvp-intro h2 { font: 800 clamp(26px,2.5vw,38px)/1 var(--font-display); margin: 10px 0; }
+.pvp-intro h2 span { color: var(--o-cyan-500); }
+.pvp-intro p { color: var(--text-secondary); font-size: 16px; line-height: 1.5; max-width: 54ch; }
+.pvp-status-strip { display:flex; gap:12px; align-items:center; margin:20px 0 14px; font:11px var(--font-mono); color:var(--text-secondary); }
+.pvp-formats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.pvp-format { min-width:0; text-align:left; padding:18px; color:var(--text-primary); background:var(--surface-panel-raised); border:1px solid var(--line-strong); cursor:pointer; display:flex; flex-direction:column; gap:7px; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); transition:background 90ms,border-color 90ms; }
+.pvp-format:hover,.pvp-format:focus-visible { background:rgba(34,216,226,.10); border-color:var(--o-cyan-500); outline:2px solid var(--o-cyan-500); outline-offset:-3px; }
+.pvp-format:active { transform:translateY(1px); }
+.pvp-format:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+.pvp-format-number { font:800 36px/1 var(--font-display); color:var(--o-cyan-500); }
+.pvp-format-number span { font-size:20px; color:var(--text-secondary); padding:0 4px; }
+.pvp-format strong { font:600 12px var(--font-ui); letter-spacing:.12em; }
+.pvp-format small { color:var(--text-secondary); min-height:38px; font:15px/1.25 var(--font-body); }
+.pvp-format-meta { display:flex; justify-content:space-between; gap:8px; font:10px var(--font-mono); color:var(--text-secondary); margin-top:8px; }
+.pvp-format-meta b { font-weight:400; }
+.pvp-format-meta i { font-style:normal; color:var(--o-cyan-500); }
+.pvp-option { display:block; color:var(--text-primary); font-size:15px; margin:16px 0; }
+.pvp-option small { display:block; padding-left:22px; color:var(--text-secondary); }
+.pvp-option input,.pvp-options input { accent-color:var(--o-cyan-500); }
+#pvp-weapon-search { box-sizing:border-box; width:100%; min-height:42px; padding:10px 12px; border:1px solid var(--line-strong); border-radius:0; background:var(--surface-panel-raised); color:var(--text-primary); font:14px var(--font-body); outline:none; }
+#pvp-weapon-search::placeholder { color:var(--text-secondary); }
+#pvp-weapon-search:focus { border-color:var(--o-cyan-500); }
+.pvp-option input,.pvp-options input { width:15px; height:15px; margin:0 6px 0 0; vertical-align:middle; color-scheme:dark; }
+.pvp-current { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px; margin:18px 0; border:1px solid var(--line-strong); }
+.pvp-current strong { display:block; margin:8px 0; font:600 15px var(--font-ui); }
+.pvp-current p { color:var(--text-secondary); font-size:14px; }
+.pvp-weapons { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:10px; max-height:260px; overflow-y:auto; padding:2px; }
+.pvp-weapon { color:var(--text-primary); text-align:left; background:var(--surface-panel-raised); border:1px solid var(--line-hairline); padding:12px; cursor:pointer; font:600 13px var(--font-ui); }
+.pvp-weapon small { display:block; color:var(--text-secondary); margin-top:5px; font:10px var(--font-mono); }
+.pvp-weapon[aria-pressed=true],.pvp-weapon:hover,.pvp-weapon:focus-visible { border-color:var(--o-cyan-500); color:var(--o-cyan-500); background:rgba(34,216,226,.08); }
+.pvp-options { display:flex; justify-content:space-between; gap:10px; margin:18px 0 8px; color:var(--text-secondary); font:10px var(--font-ui); letter-spacing:.1em; }
+.pvp-hud { position:fixed; inset:0; pointer-events:none; color:var(--text-primary); font-family:var(--font-ui); --pvp-inset:clamp(20px,2.2vw,40px); }
+.pvp-matchbar,.pvp-personal,.pvp-board,.pvp-death,.pvp-queue-dock,.pvp-notice { background:rgba(11,14,20,.90); border:1px solid var(--line-strong); clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); }
+.pvp-matchbar { position:absolute; top:max(64px,7.5vh); left:50%; transform:translateX(-50%); width:min(590px,54vw); display:flex; align-items:center; gap:20px; padding:14px 20px; border-top:2px solid var(--o-cyan-500); }
+.pvp-matchbar>div:first-child { flex:1; min-width:0; }
+.pvp-matchbar strong { font:700 17px var(--font-ui); display:block; margin-top:6px; }
+.pvp-matchbar small { display:block; color:var(--text-secondary); font:10px var(--font-mono); margin-top:6px; }
+.pvp-matchbar small:empty { display:none; }
+.pvp-board tr.ally td:nth-child(2) { color:var(--o-cyan-500); }
+.pvp-board tr.opponent td:nth-child(2) { color:var(--o-red-500); }
+.pvp-eyebrow { font:600 10px var(--font-ui); letter-spacing:.14em; color:var(--o-cyan-500); }
+.pvp-scoreline { white-space:nowrap; font:700 27px var(--font-mono); color:var(--o-cyan-500); }
+.pvp-scoreline span { color:var(--text-secondary); font-size:13px; padding:0 10px; }
+.pvp-scoreline b { color:var(--o-red-500); }
+.pvp-clock { border-left:1px solid var(--line-strong); padding-left:20px; text-align:right; }
+.pvp-clock span { font-size:9px; letter-spacing:.14em; color:var(--text-secondary); }
+.pvp-clock strong { font:700 24px var(--font-mono); }
+.pvp-clock.urgent strong { color:var(--o-amber-500); }
+.pvp-protection { position:absolute; top:calc(max(64px,7.5vh) + 90px); left:50%; transform:translateX(-50%); color:var(--o-cyan-500); padding:8px 14px; background:rgba(11,14,20,.86); font:600 10px var(--font-ui); letter-spacing:.10em; text-align:center; }
+.pvp-protection small { display:block; font:12px var(--font-body); color:var(--text-secondary); margin-top:4px; }
+.pvp-personal { position:absolute; right:32px; bottom:96px; width:285px; }
+.pvp-personal header { display:flex; gap:12px; align-items:center; padding:12px 16px; border-bottom:1px solid var(--line-hairline); font-size:9px; letter-spacing:.10em; }
+.pvp-personal header>span:first-child { color:var(--o-cyan-500); font:700 18px var(--font-mono); }
+.pvp-personal kbd { margin-left:auto; color:var(--text-secondary); }
+.pvp-stat-grid { display:grid; grid-template-columns:repeat(3,1fr); padding:16px; gap:12px; }
+.pvp-stat-grid strong { display:block; font:700 30px/1 var(--font-mono); }
+.pvp-stat-grid span { display:block; margin-top:7px; font-size:9px; letter-spacing:.12em; color:var(--text-secondary); }
+.pvp-personal footer { border-top:1px solid var(--line-hairline); padding:9px 16px; color:var(--text-secondary); font:9px var(--font-mono); }
+.pvp-feed { position:absolute; right:var(--pvp-inset); top:36%; width:min(340px,28vw); display:grid; gap:5px; }
+.pvp-feed-row { padding:9px 12px; text-align:right; background:rgba(11,14,20,.84); border:1px solid var(--line-hairline); font-size:12px; animation:pvp-enter 220ms var(--ease-out); }
+.pvp-feed-row span { color:var(--o-magenta-500); margin:0 8px; font:9px var(--font-mono); }
+.pvp-board { position:absolute; top:27%; left:50%; transform:translateX(-50%); width:min(720px,64vw); padding:24px; }
+.pvp-board header h2,.pvp-death h2 { font:800 clamp(28px,3vw,42px)/1 var(--font-display); margin:12px 0 8px; }
+.pvp-board header p { color:var(--text-secondary); font:14px var(--font-body); margin-bottom:16px; }
+.pvp-table-scroll { max-height:42vh; overflow:auto; pointer-events:auto; }
+.pvp-board table { width:100%; border-collapse:collapse; text-align:left; font:12px var(--font-mono); }
+.pvp-board th { position:sticky; top:0; background:var(--surface-panel); color:var(--text-secondary); font:10px var(--font-ui); letter-spacing:.1em; }
+.pvp-board th,.pvp-board td { padding:10px 8px; border-bottom:1px solid var(--line-hairline); }
+.pvp-board tr.self { background:rgba(34,216,226,.08); color:var(--o-cyan-500); }
+.pvp-board td:nth-child(2) { max-width:210px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pvp-death { position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); text-align:center; padding:28px 42px; max-width:75vw; }
+.pvp-death h2 { color:var(--o-red-500); }
+.pvp-death p { color:var(--text-secondary); font:16px var(--font-body); }
+.pvp-death>strong { display:block; color:var(--o-cyan-500); font:700 24px var(--font-mono); margin-top:16px; }
+.pvp-queue-dock { position:fixed; right:32px; bottom:96px; width:285px; padding:16px; pointer-events:none; }
+.pvp-queue-dock strong,.pvp-queue-dock small { display:block; margin-top:9px; color:var(--text-primary); }
+.pvp-queue-dock strong { font:600 17px var(--font-ui); }
+.pvp-queue-dock small { color:var(--text-secondary); font:13px var(--font-body); }
+.pvp-notice { position:fixed; right:clamp(20px,2.2vw,40px); top:25%; width:min(320px,28vw); padding:14px 18px; pointer-events:none; color:var(--text-primary); animation:pvp-enter 220ms var(--ease-out); }
+.pvp-notice p { margin:8px 0 0; font:15px/1.35 var(--font-body); }
+@keyframes pvp-enter { from { opacity:0; translate:16px 0; } to { opacity:1; translate:0 0; } }
+@media(max-width:1366px) { .pvp-matchbar { width:52vw; gap:12px; padding:12px; } .pvp-matchbar strong { font-size:14px; } .pvp-clock { padding-left:12px; } .pvp-personal,.pvp-queue-dock { width:250px; } .pvp-format { padding:13px; } }
+@media(max-width:850px) { .pvp-matchbar { width:70vw; } .pvp-formats { grid-template-columns:1fr; } .pvp-board { width:80vw; } }
+@media(prefers-reduced-motion:reduce) { .pvp-hud *,.pvp-notice,.pvp-format { animation:none!important; transition:none!important; } }

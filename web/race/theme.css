@@ -1,0 +1,248 @@
+/* Freeroam / Race — same offline kit, one surface, activity-scoped chrome.
+ * Racing layout: left classification, top-centre navigation, bottom-right timing.
+ * Text-bearing gameplay panels deliberately raise HUD opacity to .96.
+ */
+.race-ui {
+  --race-hud: rgba(11, 14, 20, .96);
+  --race-inset: clamp(20px, 2.2vw, 40px);
+  position: absolute; inset: 0; pointer-events: none; user-select: none;
+  color: var(--text-primary); font-family: var(--font-body); color-scheme: dark;
+}
+.race-ui *, .race-ui *::before, .race-ui *::after { box-sizing: border-box;
+  scrollbar-color: var(--o-ink-300) var(--surface-panel); scrollbar-width: thin; }
+.race-ui .hidden { display: none !important; }
+.race-ui button, .race-ui input, .race-ui textarea { font: inherit; }
+.race-ui button { cursor: pointer; transition: var(--t-hover), transform var(--dur-1); }
+.race-ui button:active { transform: translateY(1px); }
+.race-ui button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.race-ui button:focus-visible, .race-ui input:focus-visible, .race-ui textarea:focus-visible {
+  outline: 2px solid var(--o-cyan-500); outline-offset: -3px; box-shadow: none;
+}
+.race-ui .eyebrow, .race-ui label, .race-ui .editor-field > span,
+.race-ui .metric > span, .race-ui .timer > span, .race-ui .board-meta {
+  font: 600 11px/1.4 var(--font-ui); letter-spacing: var(--ls-label); text-transform: uppercase;
+}
+.race-ui .eyebrow { color: var(--text-eyebrow); }
+.race-ui .eyebrow b { color: var(--o-cyan-500); margin-right: 8px; }
+.race-ui kbd { font: 600 11px/1.3 var(--font-ui); color: var(--text-primary); padding: 3px 6px;
+  border: 1px solid var(--line-strong); background: var(--surface-panel-hover); border-radius: 2px; }
+.race-ui .scrim { display: none; position: absolute; inset: 0;
+  background: var(--surface-scrim); backdrop-filter: blur(3px); }
+.race-ui.panel-open .scrim { display: block; pointer-events: auto; }
+.race-ui .control-panel { display: none; position: absolute; inset: 0 auto 0 0; z-index: 10;
+  width: min(700px, 56vw); padding: 28px 32px; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--surface-app); border-right: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-overlay); clip-path: var(--cut-lg); pointer-events: auto;
+  animation: race-panel-in var(--dur-3) var(--ease-out); scrollbar-color: var(--o-ink-300) transparent; }
+.race-ui.panel-open .control-panel { display: block; }
+.race-ui .panel-stripe { display: none; }
+.race-ui .control-panel > .eyebrow { display: block; margin-top: 26px; }
+.race-ui .control-panel h2 { display: flex; align-items: baseline; gap: 9px; margin: 8px 0 16px;
+  font: 800 44px/.94 var(--font-display); letter-spacing: var(--ls-display); }
+.race-ui .terminator { width: 10px; height: 10px; background: var(--o-cyan-500); }
+.race-ui .close { position: absolute; top: 28px; right: 28px; width: 36px; height: 36px;
+  border: 1px solid var(--line-strong); color: var(--text-secondary); background: transparent; font-size: 23px; }
+.race-ui .close:hover { background: var(--surface-panel-hover); color: var(--text-primary); }
+.race-ui .back-link { padding: 8px 0; color: var(--text-secondary); background: none; border: 0;
+  font: 600 11px var(--font-ui); letter-spacing: var(--ls-label); }
+.race-ui .back-link:hover { color: var(--o-cyan-500); }
+.race-ui .tabs { display: flex; gap: 24px; margin: 26px 0 24px; border-bottom: 1px solid var(--line-strong); }
+.race-ui .tab { padding: 14px 0; border: 0; border-bottom: 2px solid transparent; background: none;
+  font: 600 12px var(--font-ui); letter-spacing: var(--ls-label); color: var(--text-secondary); }
+.race-ui .tab.active { border-bottom-color: var(--o-cyan-500); color: var(--o-cyan-500); }
+.race-ui .tab:hover { color: var(--text-primary); }
+.race-ui .tab-page { display: none; }
+.race-ui .tab-page.active { display: block; animation: race-fade var(--dur-2) var(--ease-out); }
+.race-ui .section-copy, .race-ui .queue-copy { color: var(--text-secondary); font-size: 15px; line-height: 1.55; }
+.race-ui .selected-course { padding: 24px; border: 1px solid var(--line-hairline);
+  background: var(--surface-panel); clip-path: var(--cut-md); }
+.race-ui .selected-course > span { color: var(--text-secondary); font: 600 10px var(--font-ui); letter-spacing: var(--ls-label); }
+.race-ui .selected-course > strong { display: block; margin: 14px 0 10px;
+  font: 700 28px/1.1 var(--font-display); text-transform: uppercase; overflow-wrap: anywhere; }
+.race-ui .selected-course p { color: var(--text-secondary); font-size: 15px; line-height: 1.5; }
+.race-ui .course-specs { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 24px; border-top: 1px solid var(--line-hairline); }
+.race-ui .course-specs > div { padding: 16px 8px 0; border-right: 1px solid var(--line-hairline); }
+.race-ui .course-specs > div:first-child { padding-left: 0; }
+.race-ui .course-specs > div:last-child { border: 0; }
+.race-ui .course-specs span { display: block; color: var(--text-secondary); font: 600 10px var(--font-ui); letter-spacing: .1em; }
+.race-ui .course-specs b { display: block; margin-top: 8px; font: 600 14px var(--font-mono); }
+.race-ui .queue-progress { height: 3px; margin: 24px 0 16px; background: var(--surface-panel-hover); }
+.race-ui .queue-progress i { display: block; height: 100%; background: var(--o-cyan-500); transition: width var(--dur-4) var(--ease-out); }
+.race-ui .panel-actions { display: grid; gap: 10px; margin-top: 24px; }
+.race-ui .primary, .race-ui .secondary, .race-ui .danger, .race-ui .editor-launch,
+.race-ui .inline-undo { min-height: 44px; padding: 12px 16px; border: 1px solid var(--line-strong);
+  background: var(--surface-panel); color: var(--text-primary); font: 600 11px/1.4 var(--font-ui);
+  letter-spacing: .1em; clip-path: var(--cut-sm); }
+.race-ui .primary { color: var(--text-on-accent); border-color: var(--o-cyan-500); background: var(--o-cyan-500); }
+.race-ui .primary:hover { background: var(--o-cyan-400); }
+.race-ui .secondary:hover, .race-ui .editor-launch:hover { background: var(--surface-panel-hover); }
+.race-ui .danger { color: var(--o-red-500); }
+.race-ui .danger:hover { background: var(--o-red-700); color: var(--text-primary); }
+.race-ui .editor-launch { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 32px; }
+.race-ui .editor-launch span { color: var(--text-secondary); font-size: 9px; }
+.race-ui .course-list, .race-ui .editor-catalog { display: grid; gap: 10px; margin-top: 18px; }
+.race-ui .course-card { padding: 20px; background: var(--surface-panel); border: 1px solid var(--line-hairline); clip-path: var(--cut-sm); }
+.race-ui .course-card b { display: block; font: 700 19px var(--font-display); text-transform: uppercase; }
+.race-ui .course-card em { display: block; margin-top: 9px; color: var(--text-secondary); font: normal 11px var(--font-mono); }
+.race-ui .course-card p { color: var(--text-secondary); margin-bottom: 0; line-height: 1.5; }
+.race-ui .editor-status, .race-ui .drive-status { padding: 12px 16px; margin: 0 0 18px; color: var(--text-secondary);
+  border: 1px solid var(--line-hairline); background: var(--surface-panel-raised); font-size: 14px; line-height: 1.4; }
+.race-ui .editor-status.error, .race-ui .error .drive-status { color: var(--o-red-500); }
+.race-ui label, .race-ui .editor-field { display: block; margin-bottom: 16px; color: var(--text-secondary); }
+.race-ui input, .race-ui textarea, .race-ui .custom-dropdown-trigger { width: 100%; min-width: 0; margin-top: 8px;
+  padding: 12px; color: var(--text-primary); background: var(--surface-inset); border: 1px solid var(--line-strong);
+  border-radius: 2px; font: 400 15px/1.4 var(--font-body); }
+.race-ui textarea { min-height: 76px; resize: vertical; }
+.race-ui .form-row { display: grid; grid-template-columns: 1.5fr .6fr .9fr; gap: 12px; }
+.race-ui .custom-dropdown { position: relative; }
+.race-ui .custom-dropdown-trigger { display: flex; align-items: center; justify-content: space-between; text-align: left; }
+.race-ui .custom-dropdown-trigger i { border: 4px solid transparent; border-top-color: var(--text-secondary); transform: translateY(2px); }
+.race-ui .custom-dropdown-menu { display: none; position: absolute; left: 0; right: 0; top: 100%; max-height: 220px;
+  overflow-y: auto; z-index: 20; background: var(--surface-panel-raised); border: 1px solid var(--line-strong); }
+.race-ui .custom-dropdown.open .custom-dropdown-menu { display: grid; }
+.race-ui .custom-dropdown-option { text-align: left; padding: 12px; background: none; border: 0; color: var(--text-secondary); font-size: 14px; }
+.race-ui .custom-dropdown-option:hover, .race-ui .custom-dropdown-option.selected { color: var(--o-cyan-500); background: var(--surface-panel-hover); }
+.race-ui .editor-hint { color: var(--text-secondary); font-size: 13px; line-height: 1.55; }
+.race-ui .capture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+.race-ui .capture { display: grid; grid-template-columns: 32px 1fr; gap: 5px 8px; padding: 16px 12px; text-align: left;
+  color: var(--text-primary); background: var(--surface-panel); border: 1px solid var(--line-strong); clip-path: var(--cut-sm); }
+.race-ui .capture:hover { background: var(--surface-panel-hover); }
+.race-ui .capture span { grid-row: span 2; align-self: center; font: 700 22px var(--font-mono); color: var(--text-secondary); }
+.race-ui .capture b { font: 600 11px var(--font-ui); letter-spacing: .08em; }
+.race-ui .capture small { color: var(--text-secondary); font-size: 12px; }
+.race-ui .capture.grid-slot { grid-column: 1/-1; }
+.race-ui .checkpoint-head { display: flex; justify-content: space-between; padding: 16px 0 10px; font: 600 11px var(--font-ui); letter-spacing: .1em; }
+.race-ui .checkpoint-head b { font-family: var(--font-mono); }
+.race-ui .checkpoint-list { max-height: 210px; overflow-y: auto; }
+.race-ui .checkpoint-item, .race-ui .grid-item, .race-ui .editor-course { display: grid; grid-template-columns: 32px 1fr auto; align-items: center;
+  gap: 10px; padding: 10px 8px; border-bottom: 1px solid var(--line-hairline); font: 11px var(--font-mono); }
+.race-ui .checkpoint-item button, .race-ui .grid-item button, .race-ui .editor-course button { padding: 8px; background: var(--surface-panel-hover);
+  border: 1px solid var(--line-hairline); color: var(--text-secondary); font: 600 10px var(--font-ui); }
+.race-ui .inline-undo { width: 100%; margin: 10px 0; }
+.race-ui .editor-actions { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 8px; margin: 18px 0; }
+.race-ui .editor-session-actions { grid-template-columns: 1fr 1fr; }
+.race-ui .editor-course { grid-template-columns: 1fr auto auto auto; }
+.race-ui .editor-course b { overflow-wrap: anywhere; }
+.race-ui .editor-course .delete { color: var(--o-red-500); }
+.race-ui .editor-course .delete.armed { color: var(--text-primary); background: var(--o-red-700); }
+.race-ui .race-bar { display: none; position: absolute; right: 32px; bottom: 96px;
+  width: clamp(270px, 23vw, 340px); grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: var(--race-hud); border: 1px solid var(--line-strong); clip-path: var(--cut-md); }
+.race-ui.in-race .race-bar { display: grid; }
+.race-ui .mode-lockup { grid-column: 1 / -1; min-width: 0; padding: 16px 18px 14px;
+  display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--line-hairline); }
+.race-ui .mode-lockup strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 17px var(--font-display); text-transform: uppercase; }
+.race-ui .mode-lockup .eyebrow { font-size: 9px; letter-spacing: .06em; }
+.race-ui .metric, .race-ui .timer { min-width: 0; padding: 16px 10px; border-left: 1px solid var(--line-hairline);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.race-ui .metric > span, .race-ui .timer > span { font-size: 9px; letter-spacing: .08em; color: var(--text-secondary); }
+.race-ui .metric strong, .race-ui .timer time { font: 600 clamp(17px, 1.4vw, 21px) var(--font-mono);
+  font-variant-numeric: tabular-nums; white-space: nowrap; }
+.race-ui .metric.position { border-left: 0; }
+.race-ui .timer { grid-column: 1 / -1; flex-direction: row; justify-content: space-between;
+  padding: 14px 18px; border-left: 0; border-top: 1px solid var(--line-hairline); }
+.race-ui .timer time { font-size: 22px; }
+.race-ui .metric.position strong { color: var(--o-cyan-500); }
+.race-ui .finish-window .timer time { color: var(--o-amber-500); }
+.race-ui .next-card { display: none; }
+.race-ui .checkpoint-guide { display: none; position: absolute; top: max(64px, 8vh); left: 50%; transform: translateX(-50%);
+  text-align: center; width: 200px; text-shadow: 0 2px 5px var(--o-black); }
+.race-ui .checkpoint-guide.visible { display: block; }
+.race-ui .guide-kicker { display: inline-block; padding: 5px 9px; background: var(--race-hud);
+  font: 600 10px var(--font-ui); letter-spacing: .12em; color: var(--text-primary); clip-path: var(--cut-sm); }
+.race-ui .guide-stage { height: 96px; display: grid; place-items: center; }
+.race-ui .guide-arrow { width: 90px; height: 104px; overflow: visible;
+  transform: perspective(520px) rotateX(48deg) rotateZ(var(--guide-angle)); transform-origin: 50% 48%;
+  transition: transform var(--dur-1) linear; }
+.race-ui .guide-arrow-face { fill: url(#race-guideFace); stroke: var(--o-cyan-400); stroke-width: 2; }
+.race-ui .finish-target .guide-arrow-face { fill: var(--o-chrome-100); stroke: var(--o-chrome-000); }
+.race-ui .finish-target .guide-kicker { color: var(--o-chrome-100); border-bottom: 2px solid var(--o-chrome-100); }
+.race-ui .guide-arrow-depth { fill: url(#race-guideEdge); stroke: var(--o-cyan-900); stroke-width: 2; }
+.race-ui .guide-arrow-shadow { fill: rgba(0, 0, 0, .7); transform: translateY(15px); filter: blur(4px); }
+.race-ui .guide-arrow-shine { fill: rgba(255, 255, 255, .18); }
+.race-ui .guide-readout { display: inline-flex; align-items: center; gap: 10px; padding: 7px 12px;
+  background: var(--race-hud); clip-path: var(--cut-sm); }
+.race-ui .guide-readout strong { font: 600 19px var(--font-mono); }
+.race-ui .guide-readout span { color: var(--text-secondary); font: 600 10px var(--font-ui); letter-spacing: .1em; }
+.race-ui .live-order { display: none; position: absolute; left: var(--race-inset); top: 40vh;
+  width: clamp(245px, 22vw, 310px); background: var(--race-hud); border: 1px solid var(--line-hairline); clip-path: var(--cut-sm); }
+.race-ui.in-race .live-order { display: block; }
+.race-ui.in-race.chat-open .live-order,
+.race-ui.in-race.notice-open .live-order { display: none; }
+.race-ui .live-order header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px;
+  font: 600 10px var(--font-ui); letter-spacing: .1em; color: var(--text-secondary); }
+.race-ui .live-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center;
+  gap: 8px; min-height: 36px; padding: 9px 14px; border-top: 1px solid var(--line-hairline); font-size: 13px; }
+.race-ui .live-row b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.race-ui .live-row em { font: normal 10px var(--font-mono); }
+.race-ui .live-row.self { color: var(--o-cyan-500); background: rgba(34, 216, 226, .08); }
+.race-ui .countdown, .race-ui .pulse, .race-ui .result-banner { display: none; position: absolute; top: 34vh; left: 50%; transform: translateX(-50%);
+  text-align: center; padding: 24px; background: var(--race-hud); border: 1px solid var(--line-strong); clip-path: var(--cut-lg); }
+.race-ui .countdown.visible, .race-ui .pulse.visible, .race-ui .result-banner.visible { display: block; }
+.race-ui .countdown span, .race-ui .countdown small { display: block; color: var(--text-secondary); font: 600 11px var(--font-ui); letter-spacing: .1em; }
+.race-ui .countdown strong { display: block; margin: 12px; font: 800 80px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.race-ui .countdown.go strong { color: var(--o-mint-500); }
+.race-ui .countdown.tick strong, .race-ui .countdown.go strong { animation: race-impact var(--dur-3) var(--ease-out); }
+.race-ui .pulse { top: calc(max(64px, 8vh) + 166px); padding: 8px 16px; font: 700 16px var(--font-display); }
+.race-ui .result-banner { top: 19vh; width: min(540px, 48vw); }
+.race-ui .result-banner strong { display: block; margin: 12px 0; font: 800 40px var(--font-display); }
+.race-ui .result-banner p { color: var(--text-secondary); }
+.race-ui .scoreboard { display: none; position: absolute; top: 20vh; left: 50%; transform: translateX(-50%); z-index: 7;
+  width: min(1140px, 82vw); max-height: 69vh; overflow: auto; padding: 24px; background: var(--race-hud);
+  border: 1px solid var(--line-strong); clip-path: var(--cut-lg); }
+.race-ui.board-open .scoreboard { display: block; }
+.race-ui.board-open .live-order, .race-ui.board-open .checkpoint-guide,
+.race-ui.board-open .race-bar, .race-ui.board-open .pulse { display: none; }
+.race-ui[data-phase="results"] .scoreboard { top: 43vh; max-height: 43vh; }
+.race-ui .scoreboard header { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
+.race-ui .scoreboard h1 { font: 700 26px var(--font-display); margin: 8px 0; }
+.race-ui .board-clock { display: grid; gap: 8px; text-align: right; font: 12px var(--font-mono); }
+.race-ui .board-meta { color: var(--text-secondary); padding-bottom: 20px; }
+.race-ui .board-columns, .race-ui .board-row { display: grid; grid-template-columns: 40px 1.8fr 1fr .6fr 1fr 1fr 1fr; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid var(--line-hairline); font: 12px var(--font-mono); }
+.race-ui .board-columns { color: var(--text-secondary); font: 600 10px var(--font-ui); letter-spacing: .08em; }
+.race-ui .board-row.self { color: var(--o-cyan-500); background: var(--surface-panel-raised); }
+.race-ui .board-row span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.race-ui .board-empty { padding: 32px 0; color: var(--text-secondary); }
+.race-ui .scoreboard footer { display: flex; justify-content: space-between; padding-top: 20px; color: var(--text-secondary); font: 10px var(--font-ui); letter-spacing: .1em; }
+.race-ui .editor-drive-hud { display: none; position: absolute; top: 63vh; left: 50%; transform: translateX(-50%); width: min(650px, 50vw);
+  padding: 16px; background: var(--race-hud); border: 1px solid var(--line-strong); clip-path: var(--cut-md); }
+.race-ui.editor-active:not(.panel-open) .editor-drive-hud { display: block; }
+.race-ui .editor-drive-hud header { display: flex; justify-content: space-between; gap: 12px; }
+.race-ui .editor-drive-hud header strong { display: block; margin-top: 6px; font: 700 17px var(--font-display); }
+.race-ui .drive-live { font: 10px var(--font-ui); color: var(--o-mint-500); white-space: nowrap; }
+.race-ui .drive-counts { display: flex; gap: 24px; margin: 14px 0; font: 10px var(--font-ui); color: var(--text-secondary); }
+.race-ui .drive-counts b { margin-left: 6px; color: var(--text-primary); font-family: var(--font-mono); }
+.race-ui .drive-primary-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.race-ui .drive-primary-actions > div { display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--surface-panel-raised); font: 10px var(--font-ui); }
+.race-ui .drive-secondary-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; color: var(--text-secondary); font: 10px var(--font-ui); }
+.race-ui .drive-status { margin: 0; padding: 8px; font-size: 12px; }
+.race-ui .editor-drive-hud footer { margin-top: 10px; text-align: right; color: var(--text-secondary); font: 9px var(--font-ui); letter-spacing: .1em; }
+/* Native notifications own toasts; never draw a second stack through chat. */
+.race-ui .toasts { display: none; }
+.race-ui.panel-open .race-bar, .race-ui.panel-open .checkpoint-guide, .race-ui.panel-open .live-order,
+.race-ui.panel-open .countdown, .race-ui.panel-open .result-banner, .race-ui.panel-open .scoreboard { display: none; }
+@keyframes race-panel-in { from { opacity: 0; transform: translateX(-16px); } }
+@keyframes race-fade { from { opacity: 0; } }
+@keyframes race-impact { from { opacity: .4; transform: translateY(8px); } }
+@media (max-width: 1000px) {
+  .race-ui .control-panel { width: min(700px, 94vw); padding: 22px; }
+  .race-ui .race-bar { width: 250px; }
+  .race-ui .metric strong { font-size: 19px; }
+  .race-ui .live-order { width: 235px; }
+  .race-ui .editor-drive-hud { width: 60vw; }
+  .race-ui .drive-primary-actions { grid-template-columns: 1fr; }
+  .race-ui .scoreboard { width: 94vw; }
+}
+@media (max-height: 800px) {
+  .race-ui .mode-lockup { padding: 12px 14px; }
+  .race-ui .metric { padding: 11px 8px; }
+  .race-ui .timer { padding: 12px 14px; }
+  .race-ui .live-row { min-height: 32px; padding: 7px 12px; }
+  .race-ui .result-banner { padding: 16px; }
+  .race-ui .result-banner strong { margin: 6px 0; font-size: 32px; }
+}
+@media (max-height: 800px) { .race-ui .editor-drive-hud { top: 56vh; } }
+@media (prefers-reduced-motion: reduce) {
+  .race-ui *, .race-ui *::before, .race-ui *::after { animation: none !important; transition: none !important; }
+}

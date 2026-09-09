@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Open//77 — Freeroam HUD</title>
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="hud.css">
+</head>
+<body data-ready="false" data-in-vehicle="false" data-weapon="false">
+  <main class="combat-hud" id="combat-hud" aria-live="polite">
+    <section class="vitals" id="vitals" aria-label="Player vitals">
+      <div class="vitals-line">
+        <span class="ds-label" id="health-label">HEALTH</span>
+        <span class="armor ds-data"><i aria-hidden="true"></i><span id="armor-value">0</span> ARMOR</span>
+      </div>
+      <div class="vitals-main">
+        <div class="vitals-meters">
+          <div class="meter health-meter" aria-hidden="true">
+            <span class="meter-fill" id="health-fill"></span>
+            <span class="meter-ticks"></span>
+            <span class="meter-shine"></span>
+          </div>
+          <div class="meter stamina-meter" aria-hidden="true">
+            <span class="meter-fill" id="stamina-fill"></span>
+            <span class="meter-shine"></span>
+          </div>
+        </div>
+        <div class="vitals-numbers">
+          <strong class="health-value" id="health-value">100</strong>
+          <span class="health-maximum ds-data">/ <span id="health-max">100</span></span>
+          <span class="stamina-value ds-data"><span id="stamina-percent">100</span>% STA</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="weapon-hud hud-panel" id="weapon-hud" aria-label="Active weapon">
+      <div class="hud-panel-head">
+        <span class="slot ds-data" id="weapon-slot">1</span>
+        <div class="weapon-identity">
+          <strong id="weapon-name">WEAPON</strong>
+          <span class="ds-label" id="weapon-type">LOADOUT</span>
+        </div>
+        <span class="weapon-state ds-label" id="weapon-state">HOLSTERED</span>
+      </div>
+      <div class="weapon-ammo" id="weapon-ammo">
+        <div class="magazine-strip" id="magazine-strip" aria-hidden="true"></div>
+        <div class="ammo-values">
+          <strong id="ammo-magazine">--</strong>
+          <span class="ds-data">/ <span id="ammo-reserve">--</span></span>
+        </div>
+      </div>
+      <div class="weapon-melee ds-label" id="weapon-melee">MELEE · NO AMMO POOL</div>
+      <span class="reload-label ds-label" id="reload-label">RELOAD</span>
+    </section>
+
+  </main>
+
+  <section class="vehicle-hud" id="vehicle-hud" aria-label="Vehicle telemetry">
+    <div class="speedometer-dial" id="vehicle-speedometer" role="meter"
+         aria-label="Vehicle speed" aria-valuemin="0" aria-valuemax="300" aria-valuenow="0">
+      <svg class="speedometer-ring" viewBox="0 0 160 160" aria-hidden="true">
+        <defs>
+          <linearGradient id="speed-gradient" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#22d8e2"></stop>
+            <stop offset="0.72" stop-color="#8af5cc"></stop>
+            <stop offset="1" stop-color="#ff3cac"></stop>
+          </linearGradient>
+        </defs>
+        <circle class="speedometer-track" cx="80" cy="80" r="66" pathLength="100"></circle>
+        <circle class="speedometer-arc" id="vehicle-speed-arc" cx="80" cy="80" r="66"
+                pathLength="100"></circle>
+      </svg>
+      <div class="speed-face">
+        <strong class="speed" id="vehicle-speed">000</strong>
+        <span class="speed-unit ds-label">KM/H</span>
+      </div>
+      <span class="gear ds-data" id="vehicle-gear">N</span>
+    </div>
+    <div class="vehicle-telemetry">
+      <span class="ds-label">RPM</span>
+      <div class="telemetry-meter"><span id="vehicle-rpm-fill"></span></div>
+      <span class="ds-data" id="vehicle-rpm">0</span>
+    </div>
+    <div class="vehicle-meta ds-data">
+      <span id="vehicle-health">100% INTEGRITY</span>
+      <span id="vehicle-motion">ON ROAD</span>
+    </div>
+  </section>
+  <aside class="command-hints" id="command-hints" aria-label="Freeroam chat commands" hidden>
+    <div class="command-hints-title ds-label">// CHAT COMMANDS</div>
+    <dl>
+      <div><dt>/freeroam</dt><dd>Menu &amp; tools</dd></div>
+      <div><dt>/race</dt><dd>Street racing</dd></div>
+      <div><dt>/pvp</dt><dd>Combat arenas</dd></div>
+      <div><dt>/anim</dt><dd>Animations</dd></div>
+    </dl>
+  </aside>
+  <script src="hud.js"></script>
+</body>
+</html>

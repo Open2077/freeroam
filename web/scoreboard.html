@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Open77 — Scoreboard</title>
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="scoreboard.css">
+</head>
+<body>
+  <div class="board" id="board" role="dialog" aria-label="Player scoreboard">
+    <div class="accent-line" aria-hidden="true"></div>
+    <div class="head">
+      <div class="heading">
+        <span class="ds-section-label">SESSION ROSTER</span>
+        <div class="title">PLAYERS <span class="count ds-data" id="count">0</span></div>
+      </div>
+      <div class="hint"><span>TAB</span> HOLD</div>
+    </div>
+    <div class="cols">
+      <span class="c-name">PLAYER</span>
+      <span class="c-id">ID</span>
+      <span class="c-dist">DIST</span>
+    </div>
+    <div class="rows" id="rows"></div>
+    <p class="empty" id="empty">// NO ONE ELSE ON THE SERVER</p>
+  </div>
+  <script src="scoreboard.js"></script>
+</body>
+</html>

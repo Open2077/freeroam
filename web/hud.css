@@ -1,0 +1,466 @@
+* { margin: 0; padding: 0; }
+
+/* Keep the bottom 96px for open-voice (32px inset, 22px line and
+   its transient error). Hints yield this slot to Race/PvP activity cards. */
+.command-hints {
+  position: fixed;
+  right: 32px;
+  bottom: 96px;
+  width: min(240px, calc(100vw - 64px));
+  box-sizing: border-box;
+  padding: 10px 12px;
+  background: rgba(11, 14, 20, .72);
+  clip-path: var(--cut-tr);
+  pointer-events: none;
+  animation: command-hints-in var(--dur-3) var(--ease-out);
+}
+.command-hints[hidden] { display: none; }
+.command-hints-title { margin-bottom: 8px; color: var(--text-secondary); font-size: 9px; }
+.command-hints dl { display: grid; gap: 5px; }
+.command-hints dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.command-hints dt { color: var(--o-cyan-500); font: 500 11px / 1.4 var(--font-mono); }
+.command-hints dd { color: var(--text-secondary); font: 500 13px / 1.2 var(--font-body); }
+@keyframes command-hints-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .command-hints { animation: none; } }
+
+html, body {
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.combat-hud {
+  position: absolute;
+  left: var(--space-8);
+  bottom: var(--space-8);
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+
+body[data-ready="true"] .combat-hud {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vitals {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 8px 10px 6px;
+  background: linear-gradient(270deg, transparent 0, rgba(5, 7, 11, 0.52) 28%, rgba(5, 7, 11, 0.76) 100%);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.68));
+}
+
+.vitals.critical { animation: ds-critical 1.1s var(--ease-out) infinite; }
+
+.vitals-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.vitals.critical #health-label { color: var(--o-red-500); }
+
+.armor {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--o-cyan-500);
+  font-size: var(--size-data-sm);
+}
+
+.armor i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid currentColor;
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(34, 216, 226, 0.5);
+}
+
+.vitals-main {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.vitals-meters {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 4px;
+}
+
+.meter {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(5, 7, 11, 0.8);
+  transform: skewX(-18deg);
+}
+
+.health-meter { height: 18px; background: var(--vital-health-empty); }
+.stamina-meter { height: 7px; }
+
+.meter-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  transition: width var(--dur-4) var(--ease-out);
+}
+
+.health-meter .meter-fill {
+  background: var(--vital-health);
+  box-shadow: 0 0 14px -2px var(--vital-health);
+}
+
+.stamina-meter .meter-fill {
+  background: var(--vital-stamina);
+  box-shadow: 0 0 12px -2px var(--vital-stamina);
+}
+
+.meter-ticks {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 2px), rgba(5, 7, 11, 0.95) calc(10% - 2px) 10%);
+}
+
+.meter-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 45%);
+}
+
+.vitals-numbers {
+  min-width: 108px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  justify-items: end;
+  line-height: 1;
+}
+
+.health-value {
+  color: var(--text-primary);
+  font: var(--fw-black) 44px / 0.88 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.vitals.critical .health-value {
+  color: var(--o-red-500);
+  text-shadow: 0 0 16px rgba(255, 59, 78, 0.7);
+}
+
+.health-maximum {
+  padding: 0 0 3px 5px;
+  color: var(--text-muted);
+  font-size: var(--size-data-sm);
+}
+
+.stamina-value {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  color: var(--vital-stamina);
+  font-size: var(--size-data-sm);
+}
+
+.hud-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px 14px;
+  border: 1px solid var(--line-hud);
+  background: var(--surface-hud);
+  backdrop-filter: var(--blur-hud);
+  box-shadow: var(--shadow-panel);
+  clip-path: var(--cut-tr);
+  animation: ds-rise var(--dur-3) var(--ease-out);
+}
+
+.hud-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scanline);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.weapon-hud { display: none; border-left: 2px solid var(--o-cyan-500); }
+body[data-weapon="true"]:not([data-in-vehicle="true"]) .weapon-hud { display: flex; }
+.weapon-hud.low-ammo { border-left-color: var(--o-red-500); }
+
+.hud-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slot {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  background: var(--o-ink-500);
+  color: var(--o-cyan-500);
+  clip-path: var(--cut-sm);
+  font-size: var(--size-data-sm);
+  font-weight: var(--fw-bold);
+}
+
+.weapon-identity {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.weapon-identity strong {
+  overflow: hidden;
+  color: var(--text-primary);
+  font: var(--fw-bold) 17px / 1 var(--font-display);
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.weapon-state {
+  padding: 4px 7px;
+  border: 1px solid rgba(34, 216, 226, 0.4);
+  color: var(--o-cyan-500);
+  clip-path: var(--cut-sm);
+}
+
+.weapon-ammo {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.magazine-strip {
+  height: 26px;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  transform: skewX(-14deg);
+}
+
+.magazine-strip[hidden] { display: none; }
+
+.magazine-strip span {
+  height: 55%;
+  flex: 1;
+  background: var(--line-hairline);
+  transition: height var(--dur-2) var(--ease-out), background var(--dur-2) var(--ease-out);
+}
+
+.magazine-strip span.live {
+  height: 100%;
+  background: var(--o-cyan-500);
+  box-shadow: 0 0 8px -2px var(--o-cyan-500);
+}
+
+.low-ammo .magazine-strip span.live {
+  background: var(--o-red-500);
+  box-shadow: 0 0 8px -2px var(--o-red-500);
+}
+
+.ammo-values {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1;
+}
+
+.ammo-values strong {
+  color: var(--text-primary);
+  font: var(--fw-black) 40px / 1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.low-ammo .ammo-values strong {
+  color: var(--o-red-500);
+  text-shadow: 0 0 14px rgba(255, 59, 78, 0.6);
+}
+
+.ammo-values span { color: var(--text-muted); font-size: 16px; }
+.weapon-melee { display: none; padding: 8px 0 2px; color: var(--text-secondary); }
+.weapon-hud.melee .weapon-ammo { display: none; }
+.weapon-hud.melee .weapon-melee { display: block; }
+
+.reload-label {
+  position: absolute;
+  top: -9px;
+  right: 16px;
+  display: none;
+  padding: 3px 7px;
+  background: var(--o-red-500);
+  color: #1a0409;
+  font-weight: var(--fw-bold);
+}
+.low-ammo:not(.melee) .reload-label { display: block; }
+
+.vehicle-hud {
+  --dial-size: 112px;
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 180px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-primary);
+  filter: drop-shadow(0 5px 13px rgba(0, 0, 0, 0.78));
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+
+body[data-ready="true"][data-in-vehicle="true"] .vehicle-hud {
+  display: flex;
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.speedometer-dial {
+  position: relative;
+  width: var(--dial-size);
+  height: var(--dial-size);
+  isolation: isolate;
+}
+
+.speedometer-dial::before {
+  content: "";
+  position: absolute;
+  inset: 19px;
+  z-index: -1;
+  border: 1px solid rgba(174, 211, 224, 0.12);
+  border-radius: 50%;
+  background: rgba(5, 7, 11, 0.94);
+  box-shadow: inset 0 0 24px rgba(34, 216, 226, 0.06);
+}
+
+.speedometer-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.speedometer-track,
+.speedometer-arc {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 75 25;
+  transform: rotate(135deg);
+  transform-origin: 80px 80px;
+}
+
+.speedometer-track { stroke: rgba(174, 211, 224, 0.18); }
+
+.speedometer-arc {
+  stroke: url(#speed-gradient);
+  stroke-dasharray: 0 100;
+  filter: drop-shadow(0 0 4px rgba(34, 216, 226, 0.62));
+  transition: stroke-dasharray 120ms linear;
+}
+
+.speed-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding-bottom: 8px;
+}
+
+.gear {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(34, 216, 226, 0.75);
+  border-radius: 50%;
+  background: var(--o-ink-500);
+  color: var(--o-cyan-500);
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  box-shadow: 0 0 10px rgba(34, 216, 226, 0.18);
+  transform: translateX(-50%);
+}
+
+.speed {
+  color: var(--text-primary);
+  font: var(--fw-black) 31px / 0.86 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.speed-unit { color: var(--o-cyan-500); font-size: 9px; letter-spacing: 0.18em; }
+
+.vehicle-telemetry {
+  width: 154px;
+  display: grid;
+  grid-template-columns: auto 1fr 42px;
+  align-items: center;
+  gap: 7px;
+  margin-top: -1px;
+}
+
+.telemetry-meter {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(5, 7, 11, 0.8);
+  transform: skewX(-18deg);
+}
+
+.telemetry-meter span {
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background: var(--o-cyan-500);
+  box-shadow: 0 0 12px -2px var(--o-cyan-500);
+  transition: width var(--dur-2) var(--ease-out);
+}
+
+#vehicle-rpm { color: var(--text-secondary); font-size: var(--size-data-sm); text-align: right; }
+
+.vehicle-meta {
+  width: 154px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 8px;
+}
+
+@media (max-width: 1400px), (max-height: 800px) {
+  .combat-hud { left: 24px; bottom: 24px; width: 330px; }
+  .health-value { font-size: 38px; }
+  .vehicle-hud { --dial-size: 104px; bottom: 14px; width: 170px; }
+  .speed { font-size: 29px; }
+  .speedometer-dial::before { inset: 17px; }
+  .vehicle-telemetry, .vehicle-meta { width: 146px; }
+}

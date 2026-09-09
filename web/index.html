@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Open//77 — Freeroam</title>
+  <link rel="stylesheet" href="design-system.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="race/theme.css">
+  <link rel="stylesheet" href="pvp/theme.css">
+  <link rel="stylesheet" href="animations/theme.css">
+</head>
+<body>
+<div id="freeroam-menu" class="freeroam-menu">
+  <div class="scrim" id="scrim"></div>
+
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Freeroam menu">
+    <span class="drawer-edge" aria-hidden="true"></span>
+    <header class="head">
+      <div class="head-copy">
+        <span class="ds-section-label">FREEROAM NODE</span>
+        <h1>FREE<span>ROAM</span><i aria-hidden="true"></i></h1>
+        <div class="head-meta">
+          <span class="ds-badge">ONLINE</span>
+          <span class="ds-data">OPEN//77 · SANDBOX</span>
+        </div>
+      </div>
+      <button class="close" id="close" aria-label="Close freeroam menu">✕</button>
+    </header>
+
+    <nav class="tabs" id="tabs" aria-label="Menu sections">
+      <button class="tab active" data-tab="vehicles">VEHICLES</button>
+      <button class="tab" data-tab="weapons">WEAPONS</button>
+      <button class="tab" data-tab="travel">TRAVEL</button>
+      <button class="tab" data-tab="player">PLAYER</button>
+      <button class="tab" data-tab="animations">ANIMATIONS</button>
+      <button class="tab activity-tab" id="open-race" data-tab="race">RACE</button>
+      <button class="tab activity-tab" id="open-pvp" data-tab="pvp">PVP</button>
+    </nav>
+
+    <div class="pages">
+      <section class="page" id="page-animations" aria-label="Role-play animations">
+        <div class="anim-intro"><div><span class="ds-section-label">ROLE-PLAY COLLECTION</span>
+          <h2>EXPRESS YOURSELF<span>.</span></h2><p class="hint">Small gestures. Your story. Choose an action and make the city yours.</p></div>
+          <div class="anim-total"><strong id="anim-total">—</strong><span>ANIMATIONS</span></div>
+        </div>
+        <div class="anim-current" role="status" aria-live="polite"><span class="anim-signal" aria-hidden="true"></span>
+          <div><span id="anim-status">READY WHEN YOU ARE</span><strong id="anim-current">No active action</strong></div>
+          <button class="btn danger" id="anim-stop" disabled>■ STOP</button>
+        </div>
+        <label class="field-label" for="anim-search">FIND YOUR NEXT GESTURE</label>
+        <input class="search" id="anim-search" type="search" maxlength="128" placeholder="Search smoke, dance, hands up…" autocomplete="off" spellcheck="false">
+        <nav class="anim-filters" id="anim-filters" aria-label="Animation categories"></nav>
+        <div class="anim-list-head"><span id="anim-count" role="status" aria-live="polite">Loading collection…</span><span>☆ SAVE YOUR FAVOURITES</span></div>
+        <p class="anim-message" id="anim-message" role="alert" hidden></p>
+        <div class="anim-grid" id="anim-grid" aria-label="Available animation variants"></div>
+        <div class="anim-empty" id="anim-empty" hidden><strong id="anim-empty-title">NO MATCHES</strong><p id="anim-empty-text"></p><button class="btn" id="anim-reset">RESET FILTERS</button></div>
+        <aside class="anim-selection" aria-label="Selected animation">
+          <div class="anim-selection-heading"><span class="ds-section-label">YOUR SELECTION</span><span class="anim-test-tag" id="anim-tested">EXPERIMENTAL</span></div>
+          <strong id="anim-selected">Choose an animation</strong><p id="anim-detail">Select a card to see its details.</p>
+          <div class="anim-options"><label><input type="checkbox" id="anim-loop" checked> KEEP LOOPING</label>
+            <label id="anim-duration-wrap" hidden>TIME <select id="anim-duration" aria-label="Animation duration"><option value="5000">5 seconds</option><option value="10000" selected>10 seconds</option><option value="30000">30 seconds</option></select></label>
+          </div>
+          <button class="btn primary" id="anim-play" disabled>PLAY &amp; CLOSE <span aria-hidden="true">↗</span></button>
+          <p class="anim-help">Stand still, unarmed and outside a vehicle. TPP activates automatically. Move or use /anim stop to cancel.</p>
+        </aside>
+        <p class="anim-validation">Pre-alpha collection · Only default cigarette playback has been checked on the local male body. Other variants and body types remain experimental.</p>
+      </section>
+      <section class="page" id="page-pvp" aria-label="PvP activity">
+        <div class="pvp-intro"><span class="ds-section-label">KABUKI COMBAT NETWORK</span>
+          <h2>PICK YOUR FIGHT<span>.</span></h2>
+          <p>Drop into free-for-all or queue for a team match. Your place in the city is saved when the fight starts.</p>
+        </div>
+        <div class="pvp-status-strip"><span class="ds-badge">LIVE</span><span id="pvp-population">Connecting to arena service</span></div>
+        <div class="pvp-formats" aria-label="Match formats">
+          <button class="pvp-format" data-pvp-format="ffa"><span class="pvp-format-number">FFA</span><strong>FREE-FOR-ALL</strong><small>Join instantly · Respawn and keep fighting</small><span class="pvp-format-meta">12 SLOTS <i>ENTER →</i></span></button>
+          <button class="pvp-format" data-pvp-format="1v1"><span class="pvp-format-number">1<span>V</span>1</span><strong>DUEL</strong><small>One opponent · Every round counts</small><span class="pvp-format-meta"><b data-pvp-queue="1v1">0 QUEUED</b><i>QUEUE →</i></span></button>
+          <button class="pvp-format" data-pvp-format="2v2"><span class="pvp-format-number">2<span>V</span>2</span><strong>DOUBLES</strong><small>Two per side · Win together</small><span class="pvp-format-meta"><b data-pvp-queue="2v2">0 QUEUED</b><i>QUEUE →</i></span></button>
+          <button class="pvp-format" data-pvp-format="3v3"><span class="pvp-format-number">3<span>V</span>3</span><strong>SQUADS</strong><small>Three per side · Hold the market</small><span class="pvp-format-meta"><b data-pvp-queue="3v3">0 QUEUED</b><i>QUEUE →</i></span></button>
+        </div>
+        <label class="pvp-option"><input type="checkbox" id="pvp-bots"> Allow labelled training bots (experimental) <small>All queued players must agree. Training matches do not affect rating.</small></label>
+        <div class="pvp-current" id="pvp-current" hidden><div><span class="ds-section-label">YOUR ACTIVITY</span><strong id="pvp-current-label"></strong><p id="pvp-current-detail"></p></div><button class="btn danger" id="pvp-leave">LEAVE ACTIVITY</button></div>
+        <div class="section-head compact"><h2>COMBAT LOADOUT</h2><p class="hint" id="pvp-loadout-hint">Choose your free-for-all primary. Sidearm and melee are supplied. Changes during a fight apply on respawn.</p></div>
+        <label class="field-label" for="pvp-weapon-search">ARSENAL</label><input class="search" id="pvp-weapon-search" type="search" placeholder="Search weapon or category" autocomplete="off">
+        <div class="pvp-weapons" id="pvp-weapons"></div>
+        <div class="pvp-options"><label><input type="checkbox" id="pvp-sound" checked> COMBAT SFX</label><span>ESC CLOSES · /PVP REOPENS</span></div>
+      </section>
+      <section class="page active" id="page-vehicles">
+        <div class="section-head">
+          <h2>SPAWN A VEHICLE</h2>
+          <p class="hint" id="vehicle-hint">Vehicles are server-owned. No per-player spawn quota is enabled.</p>
+        </div>
+        <div class="stat-strip" id="vehicle-latest">GARAGE STATE UNAVAILABLE</div>
+        <label class="field-label" for="vehicle-search">CATALOG</label>
+        <input type="text" class="search" id="vehicle-search" spellcheck="false"
+               placeholder="Search vehicle or category">
+        <div class="filters" id="vehicle-filters"></div>
+        <div class="catalog-grid" id="vehicle-grid"></div>
+        <div class="custom" id="vehicle-custom">
+          <input type="text" id="vehicle-record" spellcheck="false"
+                 placeholder="Vehicle.v_sport1_rayfield_caliburn_player">
+          <button class="btn primary" id="vehicle-spawn">SPAWN</button>
+        </div>
+        <div class="row">
+          <button class="btn" id="vehicle-delete">DELETE LAST</button>
+          <button class="btn danger" id="vehicle-delete-all">DELETE ALL</button>
+        </div>
+        <div class="section-head compact"><h2>LATEST OWNED VEHICLE</h2></div>
+        <div class="action-grid">
+          <button class="btn" id="vehicle-repair">FULL REPAIR</button>
+          <button class="btn" id="vehicle-engine-on">ENGINE ON</button>
+          <button class="btn" id="vehicle-engine-off">ENGINE OFF</button>
+          <button class="btn" id="vehicle-unlock">UNLOCK</button>
+          <button class="btn" id="vehicle-lock">LOCK</button>
+          <button class="btn" id="vehicle-lights">LIGHTS ON</button>
+          <button class="btn" id="vehicle-lights-off">LIGHTS OFF</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-weapons">
+        <div class="section-head">
+          <h2>LOADOUT</h2>
+          <p class="hint">Choose a slot, then select an allowlisted weapon. Firearms receive reserve ammunition automatically.</p>
+        </div>
+        <div class="slot-picker" id="weapon-slots">
+          <button class="active" data-slot="1">SLOT 1</button>
+          <button data-slot="2">SLOT 2</button>
+          <button data-slot="3">SLOT 3</button>
+        </div>
+        <div class="loadout" id="weapon-loadout"></div>
+        <label class="field-label" for="weapon-search">ARSENAL</label>
+        <input type="text" class="search" id="weapon-search" spellcheck="false"
+               placeholder="Search weapon or class">
+        <div class="filters" id="weapon-filters"></div>
+        <div class="catalog-grid weapons" id="weapon-grid"></div>
+        <div class="section-head compact"><h2>AMMUNITION</h2></div>
+        <div class="ammo-row">
+          <input type="text" id="ammo-reserve" value="500" spellcheck="false" aria-label="Reserve ammunition">
+          <input type="text" id="ammo-magazine" placeholder="magazine: keep" spellcheck="false" aria-label="Magazine ammunition">
+          <button class="btn primary" id="weapon-ammo">SET AMMO</button>
+        </div>
+        <div class="action-grid">
+          <button class="btn" id="weapon-activate">ACTIVATE SLOT</button>
+          <button class="btn" id="weapon-refresh">REFRESH LOADOUT</button>
+          <button class="btn" id="weapon-holster">HOLSTER</button>
+          <button class="btn danger" id="weapon-remove">CLEAR SLOT</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-travel">
+        <div class="section-head"><h2>DESTINATIONS</h2></div>
+        <div class="list" id="location-list"></div>
+        <div class="section-head compact"><h2>SPAWN POINTS</h2></div>
+        <div class="list" id="spawn-list"></div>
+        <div class="section-head compact">
+          <h2>COORDINATES</h2>
+          <p class="hint">Machine values stay exact. Heading uses degrees.</p>
+        </div>
+        <div class="coords">
+          <input type="text" id="coord-x" placeholder="x" spellcheck="false">
+          <input type="text" id="coord-y" placeholder="y" spellcheck="false">
+          <input type="text" id="coord-z" placeholder="z" spellcheck="false">
+          <input type="text" id="coord-h" placeholder="heading" spellcheck="false">
+          <button class="btn primary" id="coord-go">TRAVEL</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-player">
+        <div class="section-head">
+          <h2>PLAYER STATE</h2>
+          <p class="hint">Health, armor and life transitions remain server-authoritative.</p>
+        </div>
+        <div class="stat-strip" id="player-status">PLAYER STATE UNAVAILABLE</div>
+        <div class="stack">
+          <button class="btn" id="player-wardrobe">WARDROBE<small>Clothing, outfits and appearance.</small></button>
+          <button class="btn" id="player-spawn">RETURN TO SPAWN</button>
+          <button class="btn" id="player-restore">RESTORE HEALTH + ARMOR</button>
+          <button class="btn" id="player-revive">REVIVE<small>Only available while dead.</small></button>
+          <div class="row" id="godmode-controls">
+            <button class="btn" id="player-god-on">GOD MODE ON</button>
+            <button class="btn" id="player-god-off">GOD MODE OFF</button>
+          </div>
+          <button class="btn danger" id="player-suicide">SUICIDE<small>Automatic respawn takes over.</small></button>
+        </div>
+      </section>
+    </div>
+
+    <footer class="foot">
+      <span class="keycap">ESC</span><span>CLOSE</span>
+      <i></i>
+      <span class="ds-data">/freeroam</span><span>REOPEN</span>
+    </footer>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+<div id="race-ui" class="race-ui" data-phase="waiting">
+  <main id="race-raceHud" aria-live="polite">
+    <section class="race-bar" id="race-raceBar">
+      <div class="mode-lockup">
+        <span class="eyebrow"><b>//</b> FREEROAM · RACE</span>
+        <strong id="race-hudCourse">RACE</strong>
+      </div>
+      <div class="metric position"><span>POSITION</span><strong id="race-hudPosition">--</strong></div>
+      <div class="metric"><span id="race-hudLapLabel">LAP</span><strong id="race-hudLap">-/ -</strong></div>
+      <div class="metric"><span>CHECKPOINT</span><strong id="race-hudCheckpoint">-/ -</strong></div>
+      <div class="timer"><span id="race-hudTimeLabel">RACE TIME</span><time id="race-hudTime">00:00.000</time></div>
+    </section>
+
+    <aside class="next-card" id="race-nextCard">
+      <span class="eyebrow">NEXT CHECKPOINT</span>
+      <strong id="race-nextIndex">-- / --</strong>
+      <div><span id="race-nextLap">LAP --/--</span><i></i><span id="race-bestLap">BEST --:--.---</span></div>
+    </aside>
+
+    <section class="checkpoint-guide" id="race-checkpointGuide" aria-label="Direction du prochain checkpoint">
+      <span class="guide-kicker" id="race-guideCheckpoint">CHECKPOINT -- / --</span>
+      <div class="guide-stage" id="race-guideStage">
+        <svg class="guide-arrow" id="race-guideArrow" viewBox="0 0 160 185" aria-hidden="true">
+          <defs>
+            <linearGradient id="race-guideFace" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#BDF9FC"/>
+              <stop offset=".42" stop-color="#22D8E2"/>
+              <stop offset="1" stop-color="#12B4BE"/>
+            </linearGradient>
+            <linearGradient id="race-guideEdge" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0B7F87"/>
+              <stop offset="1" stop-color="#0A2A2E"/>
+            </linearGradient>
+            <filter id="race-guideGlow" x="-60%" y="-60%" width="220%" height="240%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <path class="guide-arrow-shadow" d="M80 5 151 73 115 73 115 160 45 160 45 73 9 73Z"/>
+          <path class="guide-arrow-depth" d="M80 17 151 85 115 85 115 172 45 172 45 85 9 85Z" fill="url(#race-guideEdge)"/>
+          <path class="guide-arrow-face" d="M80 5 151 73 115 73 115 160 45 160 45 73 9 73Z" fill="url(#race-guideFace)"/>
+          <path class="guide-arrow-shine" d="M80 15 132 65 108 65 108 151 92 151 92 58 64 58Z"/>
+        </svg>
+      </div>
+      <div class="guide-readout"><strong id="race-guideDistance">--- M</strong><span id="race-guideDirection">AHEAD</span></div>
+    </section>
+
+    <aside class="live-order" id="race-liveOrder" aria-label="Classement temps réel">
+      <header><span>LIVE ORDER</span><kbd>TAB</kbd></header>
+      <div id="race-liveRows"></div>
+    </aside>
+
+    <section class="countdown" id="race-countdown">
+      <div class="countdown-frame">
+        <i class="countdown-wing left"></i><i class="countdown-wing right"></i>
+        <span id="race-countdownLabel">GRID LOCKED</span>
+        <strong id="race-countdownValue">3</strong>
+        <small id="race-countdownCourse">PREPARE TO RACE</small>
+      </div>
+    </section>
+
+    <section class="pulse" id="race-pulse"><strong id="race-pulseText">CHECKPOINT</strong></section>
+
+    <section class="result-banner" id="race-resultBanner">
+      <span class="eyebrow">OFFICIAL RESULT</span>
+      <strong id="race-resultTitle">FINISH</strong>
+      <p id="race-resultText"></p>
+    </section>
+
+    <aside class="toasts" id="race-toasts"></aside>
+
+    <section class="editor-drive-hud" id="race-editorDriveHud" aria-label="Course drive editor">
+      <header>
+        <div><span class="eyebrow"><b>//</b> COURSE CREATOR</span><strong id="race-driveCourseName">NEW NIGHT CITY RACE</strong></div>
+        <span class="drive-live">DRIVE MODE</span>
+      </header>
+      <div class="drive-counts">
+        <span><i class="start"></i>START <b id="race-driveStartCount">0 / 1</b></span>
+        <span><i class="grid"></i>GRID <b id="race-driveGridCount">0</b></span>
+        <span><i class="checkpoint"></i>CP <b id="race-driveCheckpointCount">0</b></span>
+      </div>
+      <div class="drive-primary-actions">
+        <div><kbd id="race-keyCaptureStart">F6</kbd><span>CAPTURE START</span></div>
+        <div><kbd id="race-keyCaptureGrid">F7</kbd><span>ADD GRID SLOT</span></div>
+        <div><kbd id="race-keyCaptureCheckpoint">F8</kbd><span>ADD CHECKPOINT</span></div>
+      </div>
+      <div class="drive-secondary-actions">
+        <span><kbd id="race-keyVehicle">F4</kbd> CAR</span>
+        <span><kbd id="race-keyMenu">F5</kbd> OPTIONS</span>
+        <span><kbd id="race-keyUndoCheckpoint">F9</kbd> − CP</span>
+        <span><kbd id="race-keyUndoGrid">F10</kbd> − GRID</span>
+        <span><kbd id="race-keySave">F11</kbd> SAVE</span>
+        <span><kbd id="race-keyExit">END</kbd> EXIT</span>
+      </div>
+      <p class="drive-status" id="race-driveStatus">Drive to a point and use a mapped capture key.</p>
+      <footer>REMAP IN PAUSE → SETTINGS → KEY BINDINGS</footer>
+    </section>
+
+    <section class="scoreboard" id="race-scoreboard" aria-label="Classement Race">
+      <header>
+        <div><span class="eyebrow">OPEN77 OFFICIAL TIMING</span><h1 id="race-boardCourse">RACE CLASSIFICATION</h1></div>
+        <div class="board-clock"><span id="race-boardPhase">LOBBY</span><time id="race-boardTime">00:00.000</time></div>
+      </header>
+      <div class="board-meta" id="race-boardMeta">CIRCUIT · 1 LAP · 0 CHECKPOINTS</div>
+      <div class="board-columns"><span>POS</span><span>DRIVER</span><span>STATUS</span><span>LAP</span><span>CHECKPOINT</span><span>TIME</span><span>BEST LAP</span></div>
+      <div class="board-rows" id="race-boardRows"></div>
+      <div class="board-empty" id="race-boardEmpty">The live classification starts when the grid forms.</div>
+      <footer><span>SERVER-AUTHORITATIVE TIMING</span><span>HOLD <kbd>TAB</kbd> TO VIEW</span></footer>
+    </section>
+
+    <div class="scrim" id="race-scrim"></div>
+    <section class="control-panel" id="race-controlPanel" role="dialog" aria-label="Race lobby">
+      <button class="close" id="race-closePanel" aria-label="Fermer">×</button>
+      <div class="panel-stripe"></div>
+      <button class="back-link" id="race-backFreeroam">← FREEROAM</button>
+      <span class="eyebrow">FREEROAM / ACTIVITIES</span>
+      <h2>RACE<i class="terminator" aria-hidden="true"></i></h2>
+      <p class="section-copy">Queue from the city. Race together. Return to your session.</p>
+      <nav class="tabs">
+        <button class="tab active" data-tab="lobby">LOBBY</button>
+        <button class="tab" data-tab="courses">COURSES</button>
+        <button class="tab editor-tab hidden" data-tab="editor" id="race-editorTab">EDITOR</button>
+      </nav>
+
+      <div class="tab-page active" data-page="lobby">
+        <div class="selected-course">
+          <span id="race-courseSelectionLabel">RANDOM ROTATION</span>
+          <strong id="race-panelCourse">NO COURSE</strong>
+          <p id="race-panelDescription">Waiting for server state.</p>
+          <div class="course-specs">
+            <div><span>FORMAT</span><b id="race-panelFormat">--</b></div>
+            <div><span>LAPS</span><b id="race-panelLaps">--</b></div>
+            <div><span>CHECKPOINTS</span><b id="race-panelGates">--</b></div>
+            <div><span>QUEUE</span><b id="race-panelQueue">0 / 1</b></div>
+          </div>
+        </div>
+        <div class="queue-progress"><i id="race-queueProgress"></i></div>
+        <p class="queue-copy" id="race-queueCopy">Join the next heat.</p>
+        <div class="panel-actions">
+          <button class="primary" id="race-joinButton">JOIN NEXT HEAT</button>
+          <button class="secondary hidden" id="race-leaveQueueButton">LEAVE QUEUE</button>
+          <button class="danger hidden" id="race-leaveRaceButton">FORFEIT RACE</button>
+        </div>
+        <button class="editor-launch" id="race-openEditor">COURSE EDITOR <span>ADMIN ACCESS</span></button>
+      </div>
+
+      <div class="tab-page" data-page="courses">
+        <p class="section-copy">Available server courses. An admin selection overrides the random draw for one heat.</p>
+        <div class="course-list" id="race-courseList"></div>
+      </div>
+
+      <div class="tab-page editor-page" data-page="editor">
+        <div class="editor-status" id="race-editorStatus">Admin editor session active.</div>
+        <label>COURSE NAME<input id="race-editName" maxlength="64" autocomplete="off"></label>
+        <label>DESCRIPTION<textarea id="race-editDescription" maxlength="240"></textarea></label>
+        <div class="editor-field"><span>RACE VEHICLE</span>
+          <div class="custom-dropdown" id="race-editVehicle" data-value="">
+            <button class="custom-dropdown-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="race-editVehicleMenu">
+              <span class="custom-dropdown-value">SELECT VEHICLE</span><i aria-hidden="true"></i>
+            </button>
+            <div class="custom-dropdown-menu" id="race-editVehicleMenu" role="listbox" aria-label="Race vehicle"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="editor-field"><span>FORMAT</span>
+            <div class="custom-dropdown" id="race-editType" data-value="circuit">
+              <button class="custom-dropdown-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="race-editTypeMenu">
+                <span class="custom-dropdown-value">CIRCUIT / MULTILAP</span><i aria-hidden="true"></i>
+              </button>
+              <div class="custom-dropdown-menu" id="race-editTypeMenu" role="listbox" aria-label="Race format"></div>
+            </div>
+          </div>
+          <label>LAPS<input id="race-editLaps" type="number" min="1" max="99" step="1"></label>
+          <label>ZONE RADIUS<input id="race-editRadius" type="number" min="2" max="30" step="0.5"></label>
+        </div>
+        <p class="editor-hint">Drive onto the exact mark and face the desired direction before each capture. While seated, coordinates come from the authoritative editor car; on foot they come from the authenticated player position.</p>
+        <div class="capture-grid">
+          <button class="capture" id="race-captureStart"><span>01</span><b>CAPTURE START</b><small id="race-startState">Not captured</small></button>
+          <button class="capture" id="race-addCheckpoint"><span>+</span><b>ADD CHECKPOINT</b><small>Current server position</small></button>
+          <button class="capture grid-slot" id="race-captureGrid"><span>▦</span><b>ADD VEHICLE GRID SLOT</b><small>One exact, non-overlapping spawn position per racer</small></button>
+        </div>
+        <div class="checkpoint-head"><span>STARTING GRID</span><b id="race-gridCount">0 SLOTS</b></div>
+        <div class="checkpoint-list grid-list" id="race-gridList"></div>
+        <button class="inline-undo" id="race-undoGrid">UNDO LAST GRID SLOT</button>
+        <div class="checkpoint-head"><span>CHECKPOINTS</span><b id="race-checkpointCount">0</b></div>
+        <div class="checkpoint-list" id="race-checkpointList"></div>
+        <div class="editor-actions">
+          <button class="secondary" id="race-newCourse">NEW</button>
+          <button class="secondary" id="race-undoCheckpoint">UNDO CHECKPOINT</button>
+          <button class="primary" id="race-saveCourse">SAVE COURSE</button>
+        </div>
+        <div class="editor-actions editor-session-actions">
+          <button class="secondary" id="race-respawnEditorVehicle">RESPAWN CAR</button>
+          <button class="danger" id="race-exitEditor">EXIT DRIVE MODE</button>
+        </div>
+        <div class="editor-catalog" id="race-editorCatalog"></div>
+      </div>
+    </section>
+  </main>
+  </div>
+  <script src="app.js"></script>
+  <script src="race/app.js"></script>
+  <div id="pvp-hud" class="pvp-hud" hidden aria-label="PvP match HUD">
+    <section class="pvp-matchbar"><div><span class="pvp-eyebrow" id="pvp-mode">FREE-FOR-ALL</span><strong id="pvp-objective">KABUKI MARKET</strong><small id="pvp-match-hint"></small></div><div class="pvp-scoreline" id="pvp-scoreline"></div><div class="pvp-clock"><span id="pvp-phase">LIVE</span><strong id="pvp-timer">05:00</strong></div></section>
+    <div class="pvp-protection" id="pvp-protection" hidden>SPAWN PROTECTION <strong id="pvp-protection-time"></strong><small>Attacking ends protection</small></div>
+    <section class="pvp-personal"><header><span id="pvp-rank">P1</span><span>YOUR PERFORMANCE</span><kbd>TAB</kbd></header><div class="pvp-stat-grid"><div><strong id="pvp-kills">0</strong><span>KILLS</span></div><div><strong id="pvp-deaths">0</strong><span>DEATHS</span></div><div><strong id="pvp-assists">0</strong><span>ASSISTS</span></div></div><footer id="pvp-streak">/PVP · LOADOUT / LEAVE</footer></section>
+    <div class="pvp-feed" id="pvp-feed" aria-live="polite"></div>
+    <section class="pvp-death" id="pvp-death" hidden><span class="pvp-eyebrow">SIGNAL LOST</span><h2 id="pvp-death-title">ELIMINATED</h2><p id="pvp-death-detail"></p><strong id="pvp-respawn"></strong></section>
+    <section class="pvp-board" id="pvp-board" hidden><header><span class="pvp-eyebrow">COMBAT REPORT</span><h2 id="pvp-board-title">LIVE STANDINGS</h2><p id="pvp-board-subtitle"></p></header><div class="pvp-table-scroll"><table><thead><tr><th>#</th><th>PLAYER</th><th>K</th><th>D</th><th>A</th><th>SCORE</th></tr></thead><tbody id="pvp-rows"></tbody></table></div></section>
+  </div>
+  <div class="pvp-queue-dock" id="pvp-queue-dock" hidden><span class="pvp-eyebrow">ARENA MATCHMAKING</span><strong id="pvp-queue-label"></strong><small>Explore the city while you wait · /pvp</small></div>
+  <div class="pvp-notice" id="pvp-notice" hidden role="status"><span class="pvp-eyebrow" id="pvp-notice-title"></span><p id="pvp-notice-body"></p></div>
+  <script src="pvp/app.js"></script>
+  <script src="animations/catalog.js"></script>
+  <script src="animations/app.js"></script>
+</body>
+</html>
